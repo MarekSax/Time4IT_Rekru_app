@@ -1,7 +1,8 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-import { Check, MoreVertical } from 'lucide-react';
+import { MoreVertical } from 'lucide-react';
+import Image from 'next/image';
 
 import { Order } from '@/lib/orders-types';
 
@@ -85,14 +86,20 @@ export const getColumns = (handleDelete: (id: string) => void): ColumnDef<Order>
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
-              className="data-[state=open]:border-brand-600 h-8 w-8 p-0 data-[state=open]:border-2"
+              className="data-[state=open]:border-brand-600 h-8 w-8 cursor-pointer p-0 data-[state=open]:border-2"
             >
               <span className="sr-only">Open menu</span>
               <MoreVertical className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => handleDelete(row.original.id)}>Usuń zamówienie</DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => handleDelete(row.original.id)}
+              className="gap-[2px] text-sm font-semibold text-gray-700"
+            >
+              <Image src="/images/icons/trash.svg" width={16} height={16} alt="Delete" unoptimized />
+              Usuń zamówienie
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

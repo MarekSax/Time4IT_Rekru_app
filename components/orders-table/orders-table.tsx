@@ -63,7 +63,7 @@ export default function OrdersTable({ initialData }: OrdersTableProps) {
             <p className="text-3xl/[38px] font-semibold text-gray-900">{total}</p>
             <p className="text-sm font-normal text-gray-600">wszystkich zamówień</p>
           </div>
-          <Button className="bg-brand-600 h-auto px-4 py-2.5 text-base font-semibold">
+          <Button className="bg-brand-600 hover:bg-brand-700 h-auto cursor-pointer px-4 py-2.5 text-base font-semibold transition-colors duration-150">
             <Image src="/images/icons/plus.svg" width={16} height={16} alt="Dodaj zamówienie" unoptimized />
             <span>Dodaj zamówienie</span>
           </Button>
