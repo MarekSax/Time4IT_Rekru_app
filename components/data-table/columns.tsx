@@ -1,58 +1,66 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-import { ArrowUpDown, MoreHorizontal, MoreVertical } from 'lucide-react';
-import Image from 'next/image';
+import { Check, MoreVertical } from 'lucide-react';
 
-import { deleteOrder } from '@/lib/orders';
 import { Order } from '@/lib/orders-types';
 
 import { Button } from '../ui/button';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '../ui/dropdown-menu';
+import { Checkbox } from '../ui/checkbox';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu';
+import OrderStatusBadge from './badge';
+import HeaderButton from './header-button';
 
 export const getColumns = (handleDelete: (id: string) => void): ColumnDef<Order>[] => [
   {
+    id: 'checkbox',
+    header: () => (
+      <div className="w-fit pl-5">
+        <Checkbox className="size-5" />
+      </div>
+    ),
+    cell: ({ row }) => (
+      <div className="w-fit pl-5">
+        <Checkbox id={`checkbox-${row.original.id}`} className="size-5" />
+      </div>
+    ),
+  },
+  {
     accessorKey: 'orderNumber',
     header: ({ column }) => {
-      return (
-        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-          Numer zamówienia
-          <Image src="/images/icons/chevron-selector-vertical.svg" width={12} height={12} alt="Sort" unoptimized />
-        </Button>
-      );
+      return <HeaderButton column={column}>Numer zamówienia</HeaderButton>;
+    },
+    cell: ({ row }) => {
+      return <div className="font-medium">{row.getValue('orderNumber')}</div>;
     },
   },
   {
     accessorKey: 'dueDate',
     header: ({ column }) => {
-      return (
-        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-          Data
-          <Image src="/images/icons/chevron-selector-vertical.svg" width={12} height={12} alt="Sort" unoptimized />
-        </Button>
-      );
+      return <HeaderButton column={column}>Data</HeaderButton>;
+    },
+    cell: ({ row }) => {
+      const date = new Date(row.getValue('dueDate'));
+      const formatted = date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      });
+
+      return formatted;
     },
   },
   {
     accessorKey: 'status',
-    header: 'Status',
+    header: () => <div className="text-xs font-semibold text-gray-500">Status</div>,
+    cell: ({ row }) => {
+      return <OrderStatusBadge status={row.getValue('status')} />;
+    },
   },
   {
     accessorKey: 'totalGross',
     header: ({ column }) => {
-      return (
-        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-          Kwota
-          <Image src="/images/icons/chevron-selector-vertical.svg" width={12} height={12} alt="Sort" unoptimized />
-        </Button>
-      );
+      return <HeaderButton column={column}>Kwota</HeaderButton>;
     },
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue('totalGross'));
@@ -66,7 +74,8 @@ export const getColumns = (handleDelete: (id: string) => void): ColumnDef<Order>
   },
   {
     accessorKey: 'customer',
-    header: 'Klient',
+    header: () => <span className="text-xs font-semibold text-gray-500">Klient</span>,
+    cell: ({ row }) => <span className="font-medium">{row.getValue('customer')}</span>,
   },
   {
     id: 'actions',
