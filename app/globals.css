@@ -54,6 +54,7 @@
   --color-error-50: #fef3f2;
   --color-error-200: #fecdca;
   --color-error-500: #f04438;
+  --color-error-600: #d92d20;
   --color-error-700: #b42318;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);

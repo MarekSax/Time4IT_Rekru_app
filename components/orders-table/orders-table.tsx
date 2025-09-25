@@ -1,5 +1,6 @@
 'use client';
 
+import { Delete } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -8,11 +9,13 @@ import { Order, OrdersPage } from '@/lib/orders-types';
 
 import { getColumns } from '../data-table/columns';
 import { DataTable } from '../data-table/data-table';
+import DeleteOrderDialog from '../delete-order-dialog/delete-order-dialog';
 import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
+  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
@@ -70,17 +73,7 @@ export default function OrdersTable({ initialData }: OrdersTableProps) {
         </div>
       </div>
       <DataTable<Order, any> columns={columns} data={orders} />
-      <AlertDialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Czy na pewno chcesz usunąć zamówienie?</AlertDialogTitle>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => setDialogOpen(false)}>Anuluj</AlertDialogCancel>
-            <AlertDialogAction onClick={handleConfirmDelete}>Usuń</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <DeleteOrderDialog open={dialogOpen} setDialogOpen={setDialogOpen} handleConfirmDelete={handleConfirmDelete} />
     </section>
   );
 }
