@@ -36,8 +36,11 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --color-gray-25: #fdfdfd;
+  --color-gray-200: #e9eaeb;
   --color-gray-600: #535862;
   --color-gray-900: #181d27;
+  --color-brand-600: #7f56d9;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);

@@ -1,8 +1,18 @@
 import Image from 'next/image';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { DataTable } from '@/components/data-table/data-table';
+import OrdersTable from '@/components/orders-table/orders-table';
+import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
+import { fetchOrdersSSR } from '@/lib/orders';
 
-export default function Home() {
-  return <Container as="main">test</Container>;
+export default async function Home() {
+  const data = await fetchOrdersSSR(1, 30);
+  console.log(data);
+
+  return (
+    <Container as="main">
+      <OrdersTable initialData={data} />
+    </Container>
+  );
 }

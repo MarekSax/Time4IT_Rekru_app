@@ -8,6 +8,15 @@ export interface Order {
   dueDate: string;
   totalGross: number;
 }
+export interface OrdersPage {
+  items: Order[];
+  page: number;
+  perView: number;
+  total: number;
+  totalPages: number;
+  hasNext: boolean;
+  hasPrev: boolean;
+}
 
 export interface ApiList<T> {
   items: T[];
