@@ -74,7 +74,10 @@ export const getColumns = (handleDelete: (id: string) => void): ColumnDef<Order>
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
+            <Button
+              variant="ghost"
+              className="data-[state=open]:border-brand-600 h-8 w-8 p-0 data-[state=open]:border-2"
+            >
               <span className="sr-only">Open menu</span>
               <MoreVertical className="h-4 w-4" />
             </Button>
