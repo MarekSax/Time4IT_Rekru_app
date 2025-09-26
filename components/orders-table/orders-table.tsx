@@ -32,7 +32,6 @@ export default function OrdersTable({ initialData }: OrdersTableProps) {
       setOrders(res.items);
       setTotal(res.total);
     });
-    console.log(pagination);
   }, [pagination]);
 
   const handleDeleteClick = (id: string) => {

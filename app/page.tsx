@@ -4,7 +4,6 @@ import { fetchOrders } from '@/lib/orders';
 
 export default async function Home() {
   const data = await fetchOrders(1, 7);
-  console.log(data);
 
   return (
     <Container as="main">
