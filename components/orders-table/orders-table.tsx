@@ -44,15 +44,15 @@ export default function OrdersTable({ initialData }: OrdersTableProps) {
 
   const handleAddOrder = async (newOrder: Omit<Order, 'id'>) => {
     const tempOrder: Order = { ...newOrder, id: crypto.randomUUID() };
-    setTotal(prev => prev + 1);
-    setOrders(prev => [tempOrder, ...prev.slice(0, pagination.pageSize - 1)]);
+    setTotal((prev) => prev + 1);
+    setOrders((prev) => [tempOrder, ...prev.slice(0, pagination.pageSize - 1)]);
 
     try {
       await addOrder(newOrder);
       await refetchOrders(0);
     } catch (err) {
       console.error(err);
-      setTotal(prev => prev - 1);
+      setTotal((prev) => prev - 1);
       await refetchOrders(pagination.pageIndex);
     }
   };
@@ -61,13 +61,14 @@ export default function OrdersTable({ initialData }: OrdersTableProps) {
     if (!deleteId) return;
 
     const prevOrders = [...orders];
-    setOrders(prev => prev.filter(o => o.id !== deleteId));
-    setTotal(prev => prev - 1);
+    setOrders((prev) => prev.filter((o) => o.id !== deleteId));
+    setTotal((prev) => prev - 1);
     setDeleteDialogOpen(false);
     setDeleteId(null);
 
     try {
       await deleteOrder(deleteId);
+      await refetchOrders(pagination.pageIndex);
     } catch (err) {
       console.error(err);
       setOrders(prevOrders);
