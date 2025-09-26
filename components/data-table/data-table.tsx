@@ -1,5 +1,6 @@
 'use client';
 
+import { DropdownMenuItemIndicator } from '@radix-ui/react-dropdown-menu';
 import {
   ColumnDef,
   SortingState,
@@ -10,12 +11,20 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import Image from 'next/image';
 import { useState } from 'react';
 
 import { cn } from '@/lib/utils';
 
 import { Button } from '../ui/button';
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '../ui/dropdown-menu';
+import { Checkbox } from '../ui/checkbox';
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 
 interface DataTableProps<TData, TValue> {
@@ -52,25 +61,38 @@ export function DataTable<TData, TValue>({
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="ml-auto">
-            Columns
+        <DropdownMenuTrigger asChild className="mr-5">
+          <Button
+            variant="outline"
+            className="ml-auto h-10 gap-1 border-gray-300 px-[14px] py-2.5 text-sm font-semibold text-gray-700"
+          >
+            Konfiguruj widok
+            <Image src="/images/icons/chevron-down.svg" width={20} height={20} alt="Sort" unoptimized />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
+        <DropdownMenuContent align="end" className="mt-4 h-[197px] min-w-[189px] overflow-y-scroll px-1.5 py-1">
           {table
             .getAllColumns()
             .filter((column) => column.getCanHide())
             .map((column) => {
               return (
-                <DropdownMenuCheckboxItem
+                <DropdownMenuItem
                   key={column.id}
-                  className="capitalize"
-                  checked={column.getIsVisible()}
-                  onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                  onClick={() => column.toggleVisibility(!column.getIsVisible())}
+                  className="flex items-center gap-2 p-2 capitalize"
                 >
+                  <span
+                    className={cn(
+                      'flex size-4 items-center justify-center rounded-sm border text-sm font-medium text-gray-900',
+                      column.getIsVisible() ? 'bg-brand-600' : 'bg-white',
+                    )}
+                  >
+                    {column.getIsVisible() && (
+                      <Image src="/images/icons/check.svg" width={12} height={12} alt="Sort" unoptimized />
+                    )}
+                  </span>
                   {column.id}
-                </DropdownMenuCheckboxItem>
+                </DropdownMenuItem>
               );
             })}
         </DropdownMenuContent>

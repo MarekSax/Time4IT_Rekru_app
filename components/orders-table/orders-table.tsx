@@ -79,10 +79,10 @@ export default function OrdersTable({ initialData }: OrdersTableProps) {
   const columns = getColumns(handleDeleteClick);
 
   return (
-    <section className="bg-gray-25 rounded-[12px] outline-1 outline-gray-200">
+    <section className="bg-gray-25 rounded-[12px] rounded-b-none outline-1 outline-gray-200">
       <h1 className="px-5 pt-3 pb-2.5 text-sm font-semibold">Zamówienia</h1>
-      <div className="flex flex-col gap-8 rounded-t-[12px] border border-b-0 bg-white p-5 outline-gray-200">
-        <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-5 rounded-t-[12px] bg-white outline-1 outline-gray-200">
+        <div className="mb-3 flex items-center justify-between p-5">
           <div>
             <p className="text-3xl/[38px] font-semibold text-gray-900">{total}</p>
             <p className="text-sm font-normal text-gray-600">wszystkich zamówień</p>
@@ -95,20 +95,20 @@ export default function OrdersTable({ initialData }: OrdersTableProps) {
             <span>Dodaj zamówienie</span>
           </Button>
         </div>
+        <DataTable
+          columns={columns}
+          data={orders}
+          total={total}
+          pagination={pagination}
+          onPaginationChange={setPagination}
+        />
+        <DeleteOrderDialog
+          open={deleteDialogOpen}
+          setDialogOpen={setDeleteDialogOpen}
+          handleConfirmDelete={handleDeleteOrder}
+        />
+        <AddOrderDialog open={addDialogOpen} setDialogOpen={setAddDialogOpen} handleConfirmAdd={handleAddOrder} />
       </div>
-      <DataTable
-        columns={columns}
-        data={orders}
-        total={total}
-        pagination={pagination}
-        onPaginationChange={setPagination}
-      />
-      <DeleteOrderDialog
-        open={deleteDialogOpen}
-        setDialogOpen={setDeleteDialogOpen}
-        handleConfirmDelete={handleDeleteOrder}
-      />
-      <AddOrderDialog open={addDialogOpen} setDialogOpen={setAddDialogOpen} handleConfirmAdd={handleAddOrder} />
     </section>
   );
 }
