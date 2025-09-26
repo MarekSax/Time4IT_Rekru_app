@@ -79,9 +79,9 @@ export default function OrdersTable({ initialData }: OrdersTableProps) {
   const columns = getColumns(handleDeleteClick);
 
   return (
-    <section className="bg-gray-25 rounded-[12px] border-1 border-gray-200">
+    <section className="bg-gray-25 rounded-[12px] outline-1 outline-gray-200">
       <h1 className="px-5 pt-3 pb-2.5 text-sm font-semibold">Zamówienia</h1>
-      <div className="flex flex-col gap-8 rounded-t-[12px] bg-white p-5 outline-1 outline-gray-200">
+      <div className="flex flex-col gap-8 rounded-t-[12px] border border-b-0 bg-white p-5 outline-gray-200">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-3xl/[38px] font-semibold text-gray-900">{total}</p>
