@@ -2,24 +2,15 @@
 
 import { Delete } from 'lucide-react';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { deleteOrder } from '@/lib/orders';
+import { deleteOrder, fetchOrders } from '@/lib/orders';
 import { Order, OrdersPage } from '@/lib/orders-types';
 
+import AddOrderDialog from '../add-order-dialog/add-order-dialog';
 import { getColumns } from '../data-table/columns';
 import { DataTable } from '../data-table/data-table';
 import DeleteOrderDialog from '../delete-order-dialog/delete-order-dialog';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '../ui/alert-dialog';
 import { Button } from '../ui/button';
 
 interface OrdersTableProps {
@@ -29,12 +20,30 @@ interface OrdersTableProps {
 export default function OrdersTable({ initialData }: OrdersTableProps) {
   const [orders, setOrders] = useState<Order[]>(initialData.items);
   const [total, setTotal] = useState(initialData.total);
+  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 7 });
+
   const [deleteId, setDeleteId] = useState<string | null>(null);
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
+
+  useEffect(() => {
+    if (pagination.pageIndex === 0) return;
+    fetchOrders(pagination.pageIndex + 1, pagination.pageSize).then(res => {
+      setOrders(res.items);
+      setTotal(res.total);
+    });
+    console.log(pagination);
+  }, [pagination]);
 
   const handleDeleteClick = (id: string) => {
     setDeleteId(id);
-    setDialogOpen(true);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleConfirmAdd = (data: Order) => {
+    setOrders(prev => [...prev, data]);
+    setTotal(prev => prev + 1);
+    setAddDialogOpen(false);
   };
 
   const handleConfirmDelete = async () => {
@@ -43,7 +52,7 @@ export default function OrdersTable({ initialData }: OrdersTableProps) {
     const prevOrders = [...orders];
     setOrders(prev => prev.filter(o => o.id !== deleteId));
     setTotal(prev => prev - 1);
-    setDialogOpen(false);
+    setDeleteDialogOpen(false);
     setDeleteId(null);
 
     try {
@@ -66,14 +75,28 @@ export default function OrdersTable({ initialData }: OrdersTableProps) {
             <p className="text-3xl/[38px] font-semibold text-gray-900">{total}</p>
             <p className="text-sm font-normal text-gray-600">wszystkich zamówień</p>
           </div>
-          <Button className="bg-brand-600 hover:bg-brand-700 h-auto cursor-pointer px-4 py-2.5 text-base font-semibold transition-colors duration-150">
+          <Button
+            className="bg-brand-600 hover:bg-brand-700 h-auto cursor-pointer px-4 py-2.5 text-base font-semibold transition-colors duration-150"
+            onClick={() => setAddDialogOpen(true)}
+          >
             <Image src="/images/icons/plus.svg" width={16} height={16} alt="Dodaj zamówienie" unoptimized />
             <span>Dodaj zamówienie</span>
           </Button>
         </div>
       </div>
-      <DataTable<Order, any> columns={columns} data={orders} />
-      <DeleteOrderDialog open={dialogOpen} setDialogOpen={setDialogOpen} handleConfirmDelete={handleConfirmDelete} />
+      <DataTable
+        columns={columns}
+        data={orders}
+        total={total}
+        pagination={pagination}
+        onPaginationChange={setPagination}
+      />
+      <DeleteOrderDialog
+        open={deleteDialogOpen}
+        setDialogOpen={setDeleteDialogOpen}
+        handleConfirmDelete={handleConfirmDelete}
+      />
+      <AddOrderDialog open={addDialogOpen} setDialogOpen={setAddDialogOpen} handleConfirmAdd={() => {}} />
     </section>
   );
 }

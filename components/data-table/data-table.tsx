@@ -19,24 +19,29 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '.
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  total: number;
+  pagination: { pageIndex: number; pageSize: number };
+  onPaginationChange: (updater: any) => void;
 }
 
-export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({
+  columns,
+  data,
+  total,
+  pagination,
+  onPaginationChange,
+}: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
-    state: { sorting },
-    initialState: {
-      pagination: {
-        pageSize: 7,
-        pageIndex: 0,
-      },
-    },
+    state: { sorting, pagination },
+    manualPagination: true,
+    pageCount: Math.ceil(total / pagination.pageSize),
+    onPaginationChange,
   });
 
   return (
