@@ -9,6 +9,7 @@ import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle } from '.
 import { Form } from '../ui/form';
 import FormInput from '../ui/form-input';
 import FormSelect from '../ui/form-select';
+import ModalIcon from '../ui/modal-icon';
 
 interface AddOrderDialogProps {
   open: boolean;
@@ -53,9 +54,10 @@ const AddOrderDialog = ({ open, setDialogOpen, handleConfirmAdd }: AddOrderDialo
 
   return (
     <Dialog open={open} onOpenChange={setDialogOpen}>
-      <DialogContent className="min-w-[640px] p-6">
+      <DialogContent className="min-w-[640px] overflow-hidden p-6">
         <DialogHeader>
-          <DialogTitle>Dodaj zamówienie</DialogTitle>
+          <ModalIcon icon="/images/icons/add-order.svg" />
+          <DialogTitle className="mt-4">Dodaj zamówienie</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">

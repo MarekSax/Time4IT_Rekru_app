@@ -8,6 +8,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '../ui/alert-dialog';
+import ModalIcon from '../ui/modal-icon';
 
 interface DeleteOrderDialogProps {
   open: boolean;
@@ -17,9 +18,10 @@ interface DeleteOrderDialogProps {
 const DeleteOrderDialog = ({ open, setDialogOpen, handleConfirmDelete }: DeleteOrderDialogProps) => {
   return (
     <AlertDialog open={open} onOpenChange={setDialogOpen}>
-      <AlertDialogContent className="h-[234px] w-[400px] items-end gap-8">
-        <AlertDialogHeader className="mt-16 gap-0">
-          <AlertDialogTitle className="text-base font-semibold text-gray-900">Usuń Zamówienie</AlertDialogTitle>
+      <AlertDialogContent className="h-[234px] w-[400px] gap-8 overflow-hidden">
+        <AlertDialogHeader className="gap-0">
+          <ModalIcon icon="/images/icons/delete-order.svg" />
+          <AlertDialogTitle className="mt-4 text-base font-semibold text-gray-900">Usuń Zamówienie</AlertDialogTitle>
           <AlertDialogDescription className="text-sm font-normal text-gray-600">
             Czy jesteś pewny, że chcesz usunąć zamówienie?
           </AlertDialogDescription>

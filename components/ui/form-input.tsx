@@ -33,7 +33,7 @@ const FormInput = <T extends FieldValues>({
             <Input
               type={type}
               className={cn(
-                'h-auto border-1 border-gray-300 px-[14px] py-2.5 font-normal placeholder:text-gray-500 md:text-base',
+                'h-auto border-1 border-gray-300 bg-white px-[14px] py-2.5 font-normal placeholder:text-gray-500 md:text-base',
                 className,
               )}
               placeholder={placeholder}

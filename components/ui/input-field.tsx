@@ -14,7 +14,7 @@ const InputField = ({ name, label, placeholder, type = 'text' }: InputFieldProps
         type={type}
         name={name}
         placeholder={placeholder}
-        className="text-base font-normal placeholder:text-gray-500"
+        className="bg-white text-base font-normal placeholder:text-gray-500"
       />
     </label>
   );
