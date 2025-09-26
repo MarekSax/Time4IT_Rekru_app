@@ -136,7 +136,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
         <div className="flex items-center justify-between space-x-2 px-6 py-4">
-          <p>
+          <p className="text-sm font-medium text-gray-700">
             Strona {table.getState().pagination.pageIndex + 1} z {table.getPageCount()}
           </p>
           <div className="flex gap-3">
@@ -145,7 +145,7 @@ export function DataTable<TData, TValue>({
               size="sm"
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
-              className="h-9 px-3 py-2 text-sm font-semibold text-gray-700"
+              className="h-9 cursor-pointer px-3 py-2 text-sm font-semibold text-gray-700"
             >
               Poprzednia
             </Button>
@@ -154,7 +154,7 @@ export function DataTable<TData, TValue>({
               size="sm"
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
-              className="h-9 px-3 py-2 text-sm font-semibold text-gray-700"
+              className="h-9 cursor-pointer px-3 py-2 text-sm font-semibold text-gray-700"
             >
               Następna
             </Button>
