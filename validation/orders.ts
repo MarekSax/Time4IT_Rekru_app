@@ -4,7 +4,7 @@ export const addOrderSchema = z.object({
   orderNumber: z
     .string()
     .nonempty('Pole nie może być puste')
-    .regex(/^ORD-\d{4}-\d{4}$/, 'Niepoprawny format numeru zamówienia.'),
+    .regex(/^ORD-\d{4}-\d{4}$/, 'Format ORD-YYYY-XXXX'),
   customer: z.string().nonempty('Pole nie może być puste').min(2, 'Wymagane, min. 2 znaki.'),
   status: z.enum(['new', 'processing', 'shipped', 'delivered', 'cancelled'] as const),
   totalGross: z.number().min(0, 'Kwota musi być większa lub równa 0'),

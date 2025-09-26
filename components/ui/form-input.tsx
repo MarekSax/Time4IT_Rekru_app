@@ -38,6 +38,14 @@ const FormInput = <T extends FieldValues>({
               )}
               placeholder={placeholder}
               {...field}
+              onChange={(e) => {
+                if (type === 'number') {
+                  const value = e.target.value;
+                  field.onChange(value === '' ? undefined : Number(value));
+                } else {
+                  field.onChange(e);
+                }
+              }}
             />
           </FormControl>
           <FormMessage className="absolute top-[100%] text-xs" />
