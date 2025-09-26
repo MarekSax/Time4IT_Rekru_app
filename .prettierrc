@@ -7,7 +7,7 @@
   "useTabs": false,
   "trailingComma": "all",
   "bracketSpacing": true,
-  "arrowParens": "avoid",
+  "arrowParens": "always",
   "endOfLine": "auto",
   "jsxSingleQuote": false,
   "importOrder": ["<THIRD_PARTY_MODULES>", "^@/", "^[./]"],

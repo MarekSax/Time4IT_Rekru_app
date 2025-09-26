@@ -4,7 +4,7 @@ import { Delete } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
-import { deleteOrder, fetchOrders } from '@/lib/orders';
+import { addOrder, deleteOrder, fetchOrders } from '@/lib/orders';
 import { Order, OrdersPage } from '@/lib/orders-types';
 
 import AddOrderDialog from '../add-order-dialog/add-order-dialog';
@@ -26,12 +26,15 @@ export default function OrdersTable({ initialData }: OrdersTableProps) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [addDialogOpen, setAddDialogOpen] = useState(false);
 
+  const refetchOrders = async (pageIndex = pagination.pageIndex) => {
+    const data = await fetchOrders(pageIndex + 1, pagination.pageSize);
+    setOrders(data.items);
+    setTotal(data.total);
+  };
+
   useEffect(() => {
     if (pagination.pageIndex === 0) return;
-    fetchOrders(pagination.pageIndex + 1, pagination.pageSize).then(res => {
-      setOrders(res.items);
-      setTotal(res.total);
-    });
+    refetchOrders();
   }, [pagination]);
 
   const handleDeleteClick = (id: string) => {
@@ -39,13 +42,22 @@ export default function OrdersTable({ initialData }: OrdersTableProps) {
     setDeleteDialogOpen(true);
   };
 
-  const handleConfirmAdd = (data: Order) => {
-    setOrders(prev => [...prev, data]);
+  const handleAddOrder = async (newOrder: Omit<Order, 'id'>) => {
+    const tempOrder: Order = { ...newOrder, id: crypto.randomUUID() };
     setTotal(prev => prev + 1);
-    setAddDialogOpen(false);
+    setOrders(prev => [tempOrder, ...prev.slice(0, pagination.pageSize - 1)]);
+
+    try {
+      await addOrder(newOrder);
+      await refetchOrders(0);
+    } catch (err) {
+      console.error(err);
+      setTotal(prev => prev - 1);
+      await refetchOrders(pagination.pageIndex);
+    }
   };
 
-  const handleConfirmDelete = async () => {
+  const handleDeleteOrder = async () => {
     if (!deleteId) return;
 
     const prevOrders = [...orders];
@@ -93,9 +105,9 @@ export default function OrdersTable({ initialData }: OrdersTableProps) {
       <DeleteOrderDialog
         open={deleteDialogOpen}
         setDialogOpen={setDeleteDialogOpen}
-        handleConfirmDelete={handleConfirmDelete}
+        handleConfirmDelete={handleDeleteOrder}
       />
-      <AddOrderDialog open={addDialogOpen} setDialogOpen={setAddDialogOpen} handleConfirmAdd={() => {}} />
+      <AddOrderDialog open={addDialogOpen} setDialogOpen={setAddDialogOpen} handleConfirmAdd={handleAddOrder} />
     </section>
   );
 }
